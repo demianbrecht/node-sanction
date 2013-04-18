@@ -1,28 +1,56 @@
-"use strict"
+'use strict'
 
-var assert = require("assert");
-var Client = require("./lib/client.js");
-var url = require("url");
-var querystring = require("querystring");
+var assert = require('assert');
+var url = require('url');
+var querystring = require('querystring');
+var http = require('http');
+var sanction = require('./lib/sanction');
 
 var PROVIDERS = {
     unit: {
-        authEndpoint: "https://example.com/o/auth",
-        tokenEndpoint: "token",
-        resourceEndpoint: "resource",
-        clientId: "clientId",
-        clienSecret: "clientSecret"
+        authEndpoint: 'https://example.com/o/auth',
+        tokenEndpoint: 'http://127.0.0.1:4242',
+        resourceEndpoint: 'resource',
+        clientId: 'clientId',
+        clienSecret: 'clientSecret',
+        redirectUri: 'local'
     }
 };
+var TEST_SERVER = {
+    host: '127.0.0.1',
+    port: 4242
+};
 
-describe("Client", function() {
+var TEST_TOKEN = 'access_token';
+var TEST_CODE = 'code';
+
+function TokenServer() {
+    var server = null;
+    TokenServer.prototype.start = function SERVER_start(cb) {
+        server = http.createServer(function(req, res) {
+            debugger;
+            res.write(TEST_TOKEN);
+            res.end();
+        }).listen(TEST_SERVER.port, TEST_SERVER.host, null, cb);
+    };
+
+    TokenServer.prototype.close = function SERVER_stop(cb) {
+        if(server) {
+            server.close(cb)
+        }
+    };
+}
+
+
+describe('Client', function() {
     var p = PROVIDERS.unit;
-    var client = new Client(p.clientId, p.clientSecret,
+    var client = new sanction.Client(p.clientId, p.clientSecret,
         p.authEndpoint, p.tokenEndpoint, p.resourceEndpoint, p.redirectUri);
+    var server = new TokenServer();
 
-    describe("#auth_uri()", function() {
-        it("should == " + p.authEndpoint, function() {
-            var testqs = {redirectUri: "unit"};
+    describe('#auth_uri()', function() {
+        it('should == ' + p.authEndpoint, function() {
+            var testqs = {redirectUri: 'unit'};
             client.authUri(testqs, function(e, uri) {
                 var o = url.parse(uri);
                 assert.equal(o.protocol, client.authEndpoint.protocol);
@@ -32,20 +60,24 @@ describe("Client", function() {
             });
         });
 
-        it("should == " + p.authEndpoint + "?scope=foo,bar", function() {
-            client.authUri({scope: "foo,bar", redirectUri: "unit"}, function(e, uri) {
+        it('should == ' + p.authEndpoint + '?scope=foo,bar', function() {
+            client.authUri({scope: 'foo,bar', redirectUri: 'unit'}, function(e, uri) {
                 var qs = querystring.parse(url.parse(uri).query);
 
-                assert.equal(qs.scope, "foo,bar");
-                assert.equal(qs.redirect_uri, "unit");
+                assert.equal(qs.scope, 'foo,bar');
+                assert.equal(qs.redirect_uri, 'unit');
             });
         });
     });
 
-    describe("#requestToken()", function() {
-        it("should be null", function() {
-            client.requestToken("foo", function(e, token) {
-                assert.equal(token, null);
+    describe('#requestToken()', function() {
+        it('should not be null', function(done) {
+            server.start(function() {
+                client.requestToken('foo', function(e, token) {
+                    assert.equal(e, null);
+                    assert.equal(token, TEST_TOKEN);
+                    server.close(done);
+                });
             });
         });
     });

@@ -1,0 +1,29 @@
+{
+    "name": "sanction",
+    "version": "0.1.0",
+    "author": "Demian Brecht <demianbrecht@gmail.com>",
+    "contributors": [{ 
+        "name": "Demian Brecht",
+        "email": "demianbrecht@gmail.com"
+    }],
+    "main": "./lib/sanction",
+    "scripts": {
+        "test": "mocha debug --reporter dot" 
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/demianbrecht/node-sanction.git"
+    },
+    "devDependencies": {
+        "mocha": "1.9.x"
+    },
+    "keywords": [
+        "oauth2",
+        "authentication",
+        "authorization"
+    ],
+    "license": "MIT",
+    "engines": {
+        "node": ">=0.8.15"
+    }
+}
