@@ -16,6 +16,7 @@ var PROVIDERS = {
         redirectUri: 'local'
     }
 };
+
 var TEST_SERVER = {
     host: '127.0.0.1',
     port: 4242
@@ -28,7 +29,6 @@ function TokenServer() {
     var server = null;
     TokenServer.prototype.start = function SERVER_start(cb) {
         server = http.createServer(function(req, res) {
-            debugger;
             res.write(TEST_TOKEN);
             res.end();
         }).listen(TEST_SERVER.port, TEST_SERVER.host, null, cb);
