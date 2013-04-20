@@ -29,6 +29,11 @@ var USER_DATA = {
     email: 'foo@bar.com'
 };
 
+var encoder = JSON.stringify; 
+var server = http.createServer(function(req, res) {
+        res.end(encoder(ACCESS_TOKEN));
+    }).listen(4242, 'localhost');
+
 describe('client', function() {
     describe('#ctor', function() {
         it('should have JSON.parse assigned to parser', function() {
@@ -93,25 +98,16 @@ describe('client', function() {
         var encode = null;
         var client = new sanction.Client(CLIENT_OPTS);
 
-        function createServer(encoder) {
-            return http.createServer(function(req, res) {
-                res.end(encoder(ACCESS_TOKEN));
-            }).listen(client.tokenEndpoint.port, client.tokenEndpoint.hostname);
-        }
-
         it('should get a valid token via JSON', function(done) {
-            var server = createServer(JSON.stringify);
-
             var opts = {code: 'code'};
             client.requestToken(opts, function(e, data) {
                 assert.notEqual(data, null);
-                server.close(done);
+                done();
             });
         });
 
         it('should get a valid token via querystring.parse', function(done) {
-            var server = createServer(querystring.stringify);
-
+            encoder = querystring.stringify
             var opts = {
                 code: 'code', 
                 parser: function(r) {
@@ -122,7 +118,8 @@ describe('client', function() {
             };
             client.requestToken(opts, function(e, data) {
                 assert.equal(JSON.stringify(data), JSON.stringify(ACCESS_TOKEN));
-                server.close(done);
+                encoder = JSON.stringify;
+                done();
             });
         });
     });
