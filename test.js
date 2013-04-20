@@ -6,7 +6,9 @@ var querystring = require('querystring');
 var url = require('url');
 var http = require('http');
 
-var sanction = require('./lib/sanction');
+var sanction = process.env.EXPRESS_COV
+    ? require('./lib-cov/sanction')
+    : require('./lib/sanction');
 
 var CLIENT_OPTS = {
     clientId: 'client_id',
@@ -121,6 +123,53 @@ describe('client', function() {
                 encoder = JSON.stringify;
                 done();
             });
+        });
+    });
+});
+
+describe('transport', function() {
+    describe('#query()', function() {
+        it('should have access_token=bar in query', function() {
+            var opts = {
+                path: '/foo'
+            };
+            sanction.transport.query(opts, 'bar');
+            assert.equal(opts.path, '/foo?access_token=bar');
+        });
+
+        it('should have access_token=bar&foo=bar in query', function() {
+            var opts = {
+                path: '/foo?foo=bar'
+            };
+            sanction.transport.query(opts, 'bar');
+            assert.equal(opts.path, '/foo?foo=bar&access_token=bar');
+        });
+
+        it('should have access_token and hash #bar', function() {
+            var opts = {
+                path: '/foo#bar'
+            };
+            sanction.transport.query(opts, 'bar');
+            assert.equal(opts.path, '/foo?access_token=bar#bar');
+        });
+    });
+
+    describe('#headers()', function() {
+        it('should have access_token=bar in headers', function() {
+            var opts = {};
+            sanction.transport.headers(opts, 'bar');
+            var headers = querystring.parse(opts.headers);
+            assert.equal(headers.access_token, 'bar');
+        });
+
+        it('should have access_token=bar and foo=bar in headers', function() {
+            var opts = {
+                headers: 'foo=bar'
+            };
+            sanction.transport.headers(opts, 'bar');
+            var headers = querystring.parse(opts.headers);
+            assert.equal(headers.access_token, 'bar');
+            assert.equal(headers.foo, 'bar');
         });
     });
 });

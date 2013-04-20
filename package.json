@@ -6,9 +6,9 @@
         "name": "Demian Brecht",
         "email": "demianbrecht@gmail.com"
     }],
-    "main": "./lib/sanction",
+    "main": "./index",
     "scripts": {
-        "test": "mocha --reporter spec" 
+        "test": "mocha -R html-cov > coverage.html" 
     },
     "repository": {
         "type": "git",
