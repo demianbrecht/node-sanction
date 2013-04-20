@@ -97,7 +97,6 @@ describe('client', function() {
     });
 
     describe('#requestToken', function() {
-        var encode = null;
         var client = new sanction.Client(CLIENT_OPTS);
 
         it('should get a valid token via JSON', function(done) {
@@ -121,6 +120,24 @@ describe('client', function() {
             client.requestToken(opts, function(e, data) {
                 assert.equal(JSON.stringify(data), JSON.stringify(ACCESS_TOKEN));
                 encoder = JSON.stringify;
+                done();
+            });
+        });
+    });
+
+    describe('#request', function() {
+        it('should get dummy user data', function(done) {
+            var client = new sanction.Client(CLIENT_OPTS);
+            client.credentials.accessToken = 'token';
+           
+            var opts = {
+                path: '/me'
+            };
+
+            client.request(opts, function(e, data) {
+                // still just getting dummy data back from previous tests
+                // (access token data)
+                assert.equal(JSON.stringify(data), JSON.stringify(ACCESS_TOKEN));
                 done();
             });
         });

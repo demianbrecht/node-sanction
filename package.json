@@ -8,7 +8,7 @@
     }],
     "main": "./lib/sanction",
     "scripts": {
-        "test": "mocha -R html-cov > coverage.html" 
+        "test": "make test REPORTER=nyan" 
     },
     "repository": {
         "type": "git",
