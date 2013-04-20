@@ -8,14 +8,15 @@
     }],
     "main": "./lib/sanction",
     "scripts": {
-        "test": "mocha debug --reporter dot" 
+        "test": "mocha --reporter spec" 
     },
     "repository": {
         "type": "git",
         "url": "https://github.com/demianbrecht/node-sanction.git"
     },
     "devDependencies": {
-        "mocha": "1.9.x"
+        "mocha": "1.9.x",
+        "clone": "0.1.x"
     },
     "keywords": [
         "oauth2",
