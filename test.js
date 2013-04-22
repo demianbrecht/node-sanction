@@ -68,6 +68,7 @@ describe('client', function() {
                 var q = querystring.decode(o.query);
                 assert.equal(q.client_id, CLIENT_OPTS.clientId);
                 assert.equal(q.redirect_uri, CLIENT_OPTS.redirectUri);
+                assert.equal(q.response_type, 'code');
 
                 var p = url.parse(CLIENT_OPTS.redirectUri);
                 assert.equal(o.protocol, p.protocol);

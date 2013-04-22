@@ -16,7 +16,8 @@
     },
     "devDependencies": {
         "mocha": "1.9.x",
-        "clone": "0.1.x"
+        "clone": "0.1.x",
+        "open": "0.0.x"
     },
     "keywords": [
         "oauth2",
