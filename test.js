@@ -186,7 +186,6 @@ describe('transport', function() {
                 }
             };
             sanction.transport.headers(opts, 'bar');
-            debugger;
             assert.equal(opts.headers.Authorization, 'Bearer bar');
             assert.equal(opts.headers.foo, 'bar');
         });
