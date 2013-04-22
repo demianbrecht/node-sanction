@@ -19,7 +19,13 @@ function main() {
                 if(data.hasOwnProperty('error')) {
                     throw new Error(data.error);
                 }
-                console.log(this);
+                var opts = {
+                    path: '/userinfo',
+                    transport: sanction.transport.headers
+                };
+                this.request(opts, function(e, data){
+                    console.log(data);
+                });
             }.bind(client));
             rl.close();
         });

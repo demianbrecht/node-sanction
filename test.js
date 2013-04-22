@@ -176,18 +176,19 @@ describe('transport', function() {
         it('should have access_token=bar in headers', function() {
             var opts = {};
             sanction.transport.headers(opts, 'bar');
-            var headers = querystring.parse(opts.headers);
-            assert.equal(headers.access_token, 'bar');
+            assert.equal(opts.headers.Authorization, 'Bearer bar');
         });
 
         it('should have access_token=bar and foo=bar in headers', function() {
             var opts = {
-                headers: 'foo=bar'
+                headers: {
+                    foo: 'bar'
+                }
             };
             sanction.transport.headers(opts, 'bar');
-            var headers = querystring.parse(opts.headers);
-            assert.equal(headers.access_token, 'bar');
-            assert.equal(headers.foo, 'bar');
+            debugger;
+            assert.equal(opts.headers.Authorization, 'Bearer bar');
+            assert.equal(opts.headers.foo, 'bar');
         });
     });
 });
