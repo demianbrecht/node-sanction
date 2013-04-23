@@ -1,5 +1,4 @@
-.. image:: https://secure.travis-ci.org/demianbrecht/node-sanction.png?branch=master
-   :target: http://travis-ci.org/#!/demianbrecht/node-sanction
+[![Build Status](https://travis-ci.org/demianbrecht/node-sanction.png?branch=master)](https://travis-ci.org/demianbrecht/node-sanction)
 
 sanction is a lightweight, dead simple client implementation of the OAuth 2.0 protocol
 
