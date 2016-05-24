@@ -182,6 +182,8 @@ Optional Parameters
 
 * ``grantType``: Defaults to "authorization_code". Should only be changed if
   you're dealing with an OAuth 2.0 extension and you know what you're doing.
+  
+* ``codeType``: Defaults to "code". This is the request key where the OAuth2 provider expects the auth code, if non-standard. Should only be changed if you're dealing with an OAuth 2.0 extension and you know what you're doing.
 
 Resource Request
 ----------------
